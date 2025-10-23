@@ -1,23 +1,26 @@
-public class Test{
-    public static void main(String args[]){
+public class Test {
+    public static void main(String args[]) {        
         Core c = new Core();
         System.out.println(c);
 
         Tag borsa = new Tag();
         borsa.setDescrizione("Borsa");
+        borsa.setPosizione(new Posizione(0, 3, 4));
         Tag chiavi = new Tag();
         chiavi.setDescrizione("Chiavi");
+        chiavi.setPosizione(new Posizione(1, 1, 0));
 
-        
         c.aggiungiAggiorna(borsa);
         c.aggiungiAggiorna(chiavi);
-        System.out.println(c);      
+        System.out.println(c);
 
         borsa.setDescrizione("Borsa Blu");
+        borsa.setPosizione(new Posizione(0, 6, 8));
         c.aggiungiAggiorna(borsa);
         
         System.out.println(c);
 
+        // Simula l'eliminazione
         c.elimina(borsa);
         System.out.println(c);
 
@@ -26,6 +29,17 @@ public class Test{
         c.aggiungiAggiorna(telefono);
 
         System.out.println(c);
+
+        Tag[] vicini = c.vicini(3);
+        System.out.println("Oggetti entro 3m: ");
+        
+        int i = 0;
+        while (i < vicini.length) {
+            Tag t = vicini[i];
+            if (t != null)
+                System.out.println(t);
+            i++;
+        }
 
         System.out.println("Finito!");
     }
