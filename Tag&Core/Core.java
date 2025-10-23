@@ -1,90 +1,74 @@
-public class Core {
-    private Tag[] tags;
-    private Posizione corrente;
-    private int count;
 
-    public Core(Posizione corrente) {
-        this.corrente = corrente;
-        this.tags = new Tag[100];
-        this.count = 0;
+
+public class Core{
+
+    private Tag[] elenco;
+    private int size;
+    private Posizione posizioneCore;
+
+    public Core() {
+        elenco = new Tag[10]; // dimensione iniziale dell'array
+        size = 0;
+        posizioneCore = new Posizione();
     }
 
-    public Posizione getPosizione() {
-        return corrente;
+    public void aggiungiAggiorna(Tag t){ 
+        int posizione = trova(t); 
+        if(posizione == -1){ 
+            aggiungi(t);
+        } else { 
+            aggiorna(t, posizione);   
+        }
     }
 
-    private int trovaTag(int codice) {
-        for (int i = 0; i < count; i++) {
-            if (tags[i].getCodice() == codice) {
+    public void elimina(Tag t){
+        int posizione = trova(t);
+        if(posizione != -1){
+            for(int i = posizione; i < size - 1; i++){
+                elenco[i] = elenco[i + 1];
+            }
+            elenco[size - 1] = null; 
+            size--;
+        }
+    }
+
+    public Tag[] vicini(float distanza){
+        Tag[] vicini = new Tag[size];
+        for(int i = 0; i < size; i++){
+            Posizione posTag = elenco[i].getPosizione();
+            if(posTag.distanzaDa(posizioneCore) <= distanza)
+                vicini[i] = elenco[i];
+        }
+
+        return vicini;
+    }
+
+    public String toString(){
+        String toReturn = "Core[";
+        for(int i = 0; i < size; i++){
+            toReturn += elenco[i].toString();
+            if(i < size - 1) toReturn += ", ";
+        }
+        toReturn += "]";
+        return toReturn;
+    }
+
+    private void aggiungi(Tag t){
+        elenco[size] = t;
+        size++;
+    }
+
+    private void aggiorna(Tag t, int posizione){
+        elenco[posizione] = t;
+    }
+
+    private int trova(Tag t){
+        for(int i = 0; i < size && elenco[i].getCodiceUnivoco() <= t.getCodiceUnivoco(); i++){
+            if(elenco[i].getCodiceUnivoco() == t.getCodiceUnivoco()){
                 return i;
             }
         }
         return -1;
     }
 
-    public void aggiungiAggiorna(Tag t) {
-        int i = trovaTag(t.getCodice());
-        if (i == -1) {
-            aggiungi(t);
-        } else {
-            aggiorna(t);
-        }
-    }
-
-    public void aggiungi(Tag t) {
-        if (count < tags.length) {
-            tags[count] = t;
-            count++;
-        } else {
-            System.out.println("Array pieno! Impossibile aggiungere nuovi Tag.");
-        }
-    }
-
-    public void aggiorna(Tag t) {
-        int i = trovaTag(t.getCodice());
-        if (i != -1) {
-            tags[i].setDistanza(t.getDistanza());
-            tags[i].setPosizione(t.getPosizione());
-        } else {
-            System.out.println("Tag non trovato, impossibile aggiornare!");
-        }
-    }
-
-    public Tag[] elenco() {
-        Tag[] lista = new Tag[count];
-        for (int i = 0; i < count; i++) {
-            lista[i] = tags[i];
-        }
-        return lista;
-    }
-
-    public void elimina(int codice) {
-        int i = trovaTag(codice);
-        if (i != -1) {
-            for (int j = i; j < count - 1; j++) {
-                tags[j] = tags[j + 1];
-            }
-            tags[count - 1] = null;
-            count--;
-        } else {
-            System.out.println("Tag non trovato, impossibile eliminare!");
-        }
-    }
-
-    public Tag[] vicini(float distanzaMax) {
-        int c = 0;
-        for (int i = 0; i < count; i++) {
-            if (tags[i].getPosizione().distanzaDa(corrente) <= distanzaMax) {
-                c++;
-            }
-        }
-        Tag[] vicini = new Tag[c];
-        int j = 0;
-        for (int i = 0; i < count; i++) {
-            if (tags[i].getPosizione().distanzaDa(corrente) <= distanzaMax) {
-                vicini[j++] = tags[i];
-            }
-        }
-        return vicini;
-    }
 }

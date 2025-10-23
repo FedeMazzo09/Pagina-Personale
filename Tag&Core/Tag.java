@@ -1,47 +1,32 @@
-public class Tag {
-    private int codice;
+public class Tag{
+    
+    private int codiceUnivoco;
     private String descrizione;
-    private float distanza;
     private Posizione posizione;
-    private int counter = 0;
+   
+    private static int counter = 0;
 
-    Tag(String descrizione, float distanza, Posizione posizione) {
+    public Tag(){
+        this.codiceUnivoco = counter++;
+    }
+
+    //Set Descrizione
+    public void setDescrizione(String descrizione){
         this.descrizione = descrizione;
-        this.distanza = distanza;
-        this.posizione = posizione;
     }
 
-    public void codice(){
-        this.codice = counter;
-        counter++;
+    //get CodiceUnivoco
+    public int getCodiceUnivoco(){
+        return this.codiceUnivoco;
     }
 
-    public int getCodice() {
-        return codice;
+    // getPosizione
+    public Posizione getPosizione(){
+        return this.posizione;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String toString(){
+        return "Tag[CodiceUnivoco: " + this.codiceUnivoco + ", Descrizione: " + this.descrizione + "]";
     }
 
-    public float getDistanza() {
-        return distanza;
-    }
-
-    public Posizione getPosizione() {
-        return posizione;
-    }
-
-    public void setDistanza(float distanza) {
-        this.distanza = distanza;
-    }
-
-    public void setPosizione(Posizione posizione) {
-        this.posizione = posizione;
-    }
-
-    public String toString() {
-        return "Tag [codice=" + codice + ", descrizione=" + descrizione +
-               ", distanza=" + distanza + ", posizione=" + posizione + "]";
-    }
 }
