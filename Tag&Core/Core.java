@@ -9,13 +9,18 @@ public class Core {
         new Posizione();
     }
 
-    public void aggiungiAggiorna(Tag t) {
-        t.aggiornaDistanza();
-        int posizione = trova(t);
-        if (posizione == -1) {
-            aggiungi(t);
-        } else {
-            aggiorna(t, posizione);
+    public void aggiungiAggiorna(Tag... tags) {
+        for (int i = 0; i < tags.length; i++) {
+            Tag t = tags[i];
+            if (t == null) continue;
+
+            t.aggiornaDistanza();
+            int posizione = trova(t);
+            if (posizione == -1) {
+                aggiungi(t);
+            } else {
+                aggiorna(t, posizione);
+            }
         }
     }
 
